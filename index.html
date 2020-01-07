@@ -45,6 +45,20 @@
 			c5.lineTo(10, 10);
 			c5.lineTo(190, 190);
 			c5.stroke();
+
+			//Assignment Program
+			var cvs6 = document.getElementById("assProgramCanvas");
+			var c6 = cvs6.getContext("2d");
+
+			c6.beginPath();
+			c6.lineTo(50, 100); //start point
+			c6.lineTo(50, 50);
+			c6.lineTo(100, 50);
+			c6.lineTo(100, 100);
+			c6.lineTo(50, 100); //end point
+			c6.stroke();
+
+			c6.fillRect(75, 75, 1, 1);
 		}
 	</script>
 	<style type="text/css">
@@ -174,9 +188,41 @@
 		</ol>
 		<canvas id="drawLineCanvas" width="200" height="200">Canvas not supported by this browser.</canvas>
 	</div>
-	
+	<hr>
 	<div id="assProgram">
 		<h3>Program to draw as given in the assignment</h3>
+		<p>This time we will solve the program assignment given in this task, follow this step by step:</p>
+		<ol>
+			<li>
+				Type in
+				<q>
+					&lt;canvas id="myCanvas" width="200" height="200"&gt;Canvas not supported by this browser.&lt;/canvas&gt;
+				</q>
+				on the body of your html document.
+			</li>
+			<li>
+				Create a <b>javascript</b> script tag in your html document.
+			</li>
+			<li>
+				Type in
+				<blockquote>
+					window.onload=function(){<br>
+						&emsp;var canvas = document.getElementById("myCanvas");<br>
+						&emsp;var context = canvas.getContext("2d");<br>
+						&emsp;context.beginPath();<br>
+						&emsp;context.lineTo(50, 100);<br>
+						&emsp;context.lineTo(50, 50);<br>
+						&emsp;context.lineTo(100, 50);<br>
+						&emsp;context.lineTo(100, 100);<br>
+						&emsp;context.lineTo(50, 100);<br>
+						&emsp;context.stroke();<br>
+						&emsp;context.fillRect(75, 75, 1, 1);<br>
+					}
+				</blockquote>
+				in the script tag.
+			</li>
+			<li>As you can probably see, in the script we created a rectangle with lines starting from <b>50, 100</b> continuing to <b>50, 50</b> then <b>100, 50</b> then <b>100, 100</b> and finally returning to the starting point <b>50, 100</b> also we added a point/pixel at the center of the rectangle specifically at <b>75, 75</b> by creating a pixel wide rectangle.</li>
+		</ol>
 		<canvas id="assProgramCanvas" width="200" height="200">Canvas not supported by this browser.</canvas>
 	</div>
 </body>
