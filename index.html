@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Draw HTML5</title>
+	<script type="text/javascript">
+		window.onload=function(){
+
+			//drawDot, cvs4 = canvas 4, c4 = context 4
+
+			//Complicated option
+			/*
+			var cvs4 = document.getElementById("drawDotCanvas");
+			var cvs4W = cvs4.width;
+			var cvs4H = cvs4.height;
+			var c4 = cvs4.getContext("2d");
+			var cvs4Data = c4.getImageData(0, 0, cvs4W, cvs4H);
+
+			function drawDot(x, y, r, g, b, a){
+				var index = (x + y * cvs4W) * 4;
+
+				cvs4Data.data[index + 0] = r;
+				cvs4Data.data[index + 1] = g;
+				cvs4Data.data[index + 2] = b;
+				cvs4Data.data[index + 3] = a;
+			}
+			function updCvs(){
+				c4.putImageData(cvs4Data, 0, 0);
+			}
+
+			drawDot(100, 100, 0, 0, 0, 255);
+			updCvs();
+			*/
+
+			//Easy option
+			var cvs4 = document.getElementById("drawDotCanvas");
+			var c4 = cvs4.getContext("2d");
+			c4.fillRect(100, 100, 1, 1);
+
+			//drawLine, cvs5 = canvas 5, c5 = context 5
+
+			var cvs5 = document.getElementById("drawLineCanvas");
+			var c5 = cvs5.getContext("2d");
+
+			c5.beginPath();
+			c5.lineTo(10, 10);
+			c5.lineTo(190, 190);
+			c5.stroke();
+		}
+	</script>
+	<style type="text/css">
+		canvas{
+			background-color: lightgreen;
+		}
+
+		q, blockquote{
+			background-color: lightgrey;
+		}
+	</style>
+</head>
+<body>
+	<h3 style="text-align:center;">Homework I</h3>
+	<h4>Explain</h4>
+	<ul>
+		<li><a href="#displayScreen">How to display a screen</a></li>
+		<li><a href="#theResolution">The resolution of the screen</a></li>
+		<li><a href="#numofColors">Number of colors that can be displayed on the screen</a></li>
+		<li><a href="#drawDot">How to display a dot at a certain coordinate on the screen</a></li>
+		<li><a href="#drawLine">How to draw a line on the screen</a></li>
+	</ul>
+	<h4>Program</h4>
+	<ul>
+		<li><a href="#assProgram">Draw an image as given in the assignment</a></li>
+	</ul>
+	<hr>
+	<div>
+		<h3>Introduction</h3>
+		<p>
+			In HTML5, we can draw on the screen using <b>canvas</b> feature in HTML5, in this page we'll be covering the assignments for our CGA class in the first week. Let's dive right in to the answers.
+		</p>
+	</div>
+
+	<div id="displayScreen">
+		<h3>How to display a screen</h3>
+		<p>To use canvas in HTML5, here's a few step by step:</p>
+		<ol>
+			<li>
+				Type in
+				<q>
+					&ltcanvas id="myCanvas" width="200" height="200"&gtCanvas not supported by this browser.&lt/canvas&gt
+				</q>
+				on the body of your html document. Result as seen below.
+			</li>
+			<li>
+				(Optional) To color the background of the canvas you'll need to use a little bit of CSS.
+			</li>
+		</ol>
+		<canvas id="displayScreenCanvas" width="200" height="200">Canvas not supported by this browser.</canvas>
+	</div>
+	
+	<div id="theResolution">
+		<h3>The resolution of the screen</h3>
+		<p>The resolution of this canvas is as can be seen in the code <q>&ltcanvas id="myCanvas" width="200" height="200"&gtCanvas not supported by this browser.&lt/canvas&gt</q> is <b>width = 200</b> and <b>height = 200</b>.</p>
+		<canvas id="theResolutionCanvas" width="200" height="200">Canvas not supported by this browser.</canvas>
+	</div>
+	
+
+	<div id="numofColors">
+		<h3>Number of colors that can be displayed on the screen</h3>
+		<canvas id="numofColorsCanvas" width="200" height="200">Canvas not supported by this browser.</canvas>
+	</div>
+	
+
+	<div id="drawDot">
+		<h3>How to display a dot at a certain coordinate on the screen</h3>
+		<p>Now we will attempt to create a dot in the center of the canvas which will be on the coordinate of <b>100, 100</b> and follow this step by step:</p>
+		<ol>
+			<li>
+				Type in
+				<q>
+					&lt;canvas id="myCanvas" width="200" height="200"&gt;Canvas not supported by this browser.&lt;/canvas&gt;
+				</q>
+				on the body of your html document.
+			</li>
+			<li>
+				Create a <b>javascript</b> script tag in your html document.
+			</li>
+			<li>
+				Type in
+				<blockquote>
+					window.onload=function(){<br>
+						&emsp;var canvas = document.getElementById("myCanvas");<br>
+						&emsp;var context = canvas.getContext("2d");<br>
+						&emsp;context.fillRect(100, 100, 1, 1);<br>
+					}
+				</blockquote>
+				in the script tag.
+			</li>
+			<li>As you can see in the script we created a rectangle actually with the size of <b>1, 1 (width, height)</b> on coordinate <b>100, 100</b>.</li>
+			<li>Voila! (you need to <b>zoom in</b> to see the pixel 'coz it's really small).</li>
+		</ol>
+		<canvas id="drawDotCanvas" width="200" height="200">Canvas not supported by this browser.</canvas>
+	</div>
+	
+
+	<div id="drawLine">
+		<h3>How to draw a line on the screen</h3>
+		<p>Now we will attempt to create a line in the canvas which will be kinda similar which creating a dot in the canvas, follow this step by step:</p>
+		<ol>
+			<li>
+				Type in
+				<q>
+					&lt;canvas id="myCanvas" width="200" height="200"&gt;Canvas not supported by this browser.&lt;/canvas&gt;
+				</q>
+				on the body of your html document.
+			</li>
+			<li>
+				Create a <b>javascript</b> script tag in your html document.
+			</li>
+			<li>
+				Type in
+				<blockquote>
+					window.onload=function(){<br>
+						&emsp;var canvas = document.getElementById("myCanvas");<br>
+						&emsp;var context = canvas.getContext("2d");<br>
+						&emsp;context.beginPath();<br>
+						&emsp;context.lineTo(10, 10);<br>
+						&emsp;context.lineTo(190, 190);<br>
+						&emsp;context.stroke();<br>
+					}
+				</blockquote>
+				in the script tag.
+			</li>
+			<li>As you can see in the script we will create a line starting from coordinate <b>10, 10</b> until <b>190, 190</b>.</li>
+		</ol>
+		<canvas id="drawLineCanvas" width="200" height="200">Canvas not supported by this browser.</canvas>
+	</div>
+	
+	<div id="assProgram">
+		<h3>Program to draw as given in the assignment</h3>
+		<canvas id="assProgramCanvas" width="200" height="200">Canvas not supported by this browser.</canvas>
+	</div>
+</body>
+</html>
