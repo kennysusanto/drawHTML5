@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript">
+		function setPixel(imageData, x, y, r=0, g=0, b=0, a=255){
+			index = (x + y * imageData.width) * 4;
+			imageData.data[index + 0] = r;
+			imageData.data[index + 1] = g;
+			imageData.data[index + 2] = b;
+			imageData.data[index + 3] = a;
+		}
+		
+		function execPixel(){
+			var x1 = parseInt(document.getElementById("xcoor").value);
+			var y1 = parseInt(document.getElementById("ycoor").value);
+			var canvas = document.getElementById("myCanvas");
+			drawPixel(canvas, x1, y1);
+		}
+
+		function drawPixel(canvas, x, y, r=0, g=0, b=0, a=255){
+			var w = canvas.width;
+			var h = canvas.height;
+			context = canvas.getContext("2d");
+			var imageData = context.getImageData(0, 0, w, h);
+			setPixel(imageData, x, y);
+			context.putImageData(imageData, 0, 0);
+		}
+
+		function execLine(){
+			var x1 = parseInt(document.getElementById("x1coor").value);
+			var y1 = parseInt(document.getElementById("y1coor").value);
+			var x2 = parseInt(document.getElementById("x2coor").value);
+			var y2 = parseInt(document.getElementById("y2coor").value);
+			var canvas = document.getElementById("myCanvas2");
+			drawLine(canvas, x1, y1, x2, y2);
+		}
+
+		function drawLine(canvas, x1, y1, x2, y2, r=0, g=0, b=0, a=255){
+			var w = canvas.width;
+			var h = canvas.height;
+			context = canvas.getContext("2d");
+			var imageData = context.getImageData(0, 0, w, h);
+
+			// y = mx + c
+
+			//method 1
+			var dx = x2 - x1;
+			var dy = y2 - y1;
+
+			var d = 2 * dy - dx;
+			var incrE = 2 * dy;
+			var incrNE = 2 * (dy - dx);
+
+			var x = x1;
+			var y = y1;
+ 
+			//start point
+			drawPixel(canvas, x, y);
+			
+			while(x < x2){
+				if (d <= 0){
+					d += incrE;
+					x++;
+				}
+				else {
+					d += incrNE;
+					x++;
+					y++;
+				}
+				//every x, y from x1, y1 to x2, y2
+				drawPixel(canvas, x, y);
+			}
+			
+			//method 2
+			/* 
+			var dx = x2 - x1;
+			var dy = y2 - y1;
+			var m = dy / dx;
+			var c = y1 - (m * x1);
+			var invm = 1 / m;
+			var invmc = c * invm;
+
+			if (m <= 1){
+				for (var x = x1; x < x2; x++){
+					var y = (m * x) + c;
+					var yp = Math.floor(0.5 + y);
+					drawPixel(canvas, x, yp);
+				}
+			}
+			else {
+				for (var y = y1; y < y2; y++){
+					var x = invm * x - invmb;
+					var xp = Math.floor(0.5 + x);
+					drawPixel(canvas, xp, y);
+				}
+			}
+			*/
+
+			//context.putImageData(imageData, 0, 0);
+		}
+
+	</script>
+	<style type="text/css">
+		canvas{
+			background-color: lightgrey;
+		}
+	</style>
+</head>
+<body>
+
+	<h2>draw pixel</h2>
+	x:<input type="text" id="xcoor" size="3">
+	y:<input type="text" id="ycoor" size="3">
+	<button onclick="execPixel()">draw</button>	
+	<p id="res">width:100 height:100</p>
+	<canvas id="myCanvas" width="100" height="100"></canvas>
+
+	<h2>draw line</h2>
+	x1:<input type="text" id="x1coor" size="3">
+	y1:<input type="text" id="y1coor" size="3"><br>
+	x2:<input type="text" id="x2coor" size="3">
+	y2:<input type="text" id="y2coor" size="3">
+	<button onclick="execLine()">draw</button>	
+	<p id="res">width:100 height:100</p>
+	<canvas id="myCanvas2" width="100" height="100"></canvas>
+</body>
+</html>
