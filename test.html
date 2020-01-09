@@ -44,59 +44,20 @@
 
 			// y = mx + c
 
-			//method 1
-			var dx = x2 - x1;
-			var dy = y2 - y1;
-
-			var d = 2 * dy - dx;
-			var incrE = 2 * dy;
-			var incrNE = 2 * (dy - dx);
-
-			var x = x1;
-			var y = y1;
- 
-			//start point
-			drawPixel(canvas, x, y);
+			//Bresenham's Algorithm
 			
-			while(x < x2){
-				if (d <= 0){
-					d += incrE;
-					x++;
-				}
-				else {
-					d += incrNE;
-					x++;
-					y++;
-				}
-				//every x, y from x1, y1 to x2, y2
-				drawPixel(canvas, x, y);
+			var dx = Math.abs(x2 - x1), sx = x1 < x2 ? 1 : -1;
+			var dy = Math.abs(y2 - y1), sy = y1 < y2 ? 1 : -1; 
+			var err = (dx>dy ? dx : -dy)/2;        
+			while (true) {
+				drawPixel(canvas, x1, y1);
+				if (x1 === x2 && y1 === y2) break;
+				var e2 = err;
+				if (e2 > -dx) { err -= dy; x1 += sx; }
+				if (e2 < dy) { err += dx; y1 += sy; }
 			}
 			
-			//method 2
-			/* 
-			var dx = x2 - x1;
-			var dy = y2 - y1;
-			var m = dy / dx;
-			var c = y1 - (m * x1);
-			var invm = 1 / m;
-			var invmc = c * invm;
-
-			if (m <= 1){
-				for (var x = x1; x < x2; x++){
-					var y = (m * x) + c;
-					var yp = Math.floor(0.5 + y);
-					drawPixel(canvas, x, yp);
-				}
-			}
-			else {
-				for (var y = y1; y < y2; y++){
-					var x = invm * x - invmb;
-					var xp = Math.floor(0.5 + x);
-					drawPixel(canvas, xp, y);
-				}
-			}
-			*/
-
+			
 			//context.putImageData(imageData, 0, 0);
 		}
 
