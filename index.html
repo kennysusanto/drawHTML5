@@ -3,62 +3,79 @@
 <head>
 	<title>Draw HTML5</title>
 	<script type="text/javascript">
+		function setPixel(imageData, x, y, r=0, g=0, b=0, a=255){
+			index = (x + y * imageData.width) * 4;
+			imageData.data[index + 0] = r;
+			imageData.data[index + 1] = g;
+			imageData.data[index + 2] = b;
+			imageData.data[index + 3] = a;
+		}
+		
+		function execPixel(){
+			var x1 = parseInt(document.getElementById("xcoor").value);
+			var y1 = parseInt(document.getElementById("ycoor").value);
+			var canvas = document.getElementById("myCanvas");
+			drawPixel(canvas, x1, y1);
+		}
+
+		function drawPixel(canvas, x, y, r=0, g=0, b=0, a=255){
+			var w = canvas.width;
+			var h = canvas.height;
+			context = canvas.getContext("2d");
+			var imageData = context.getImageData(0, 0, w, h);
+			setPixel(imageData, x, y);
+			context.putImageData(imageData, 0, 0);
+		}
+
+		function execLine(){
+			var x1 = parseInt(document.getElementById("x1coor").value);
+			var y1 = parseInt(document.getElementById("y1coor").value);
+			var x2 = parseInt(document.getElementById("x2coor").value);
+			var y2 = parseInt(document.getElementById("y2coor").value);
+			var canvas = document.getElementById("myCanvas2");
+			drawLine(canvas, x1, y1, x2, y2);
+		}
+
+		function drawLine(canvas, x1, y1, x2, y2, r=0, g=0, b=0, a=255){
+			var w = canvas.width;
+			var h = canvas.height;
+			context = canvas.getContext("2d");
+			var imageData = context.getImageData(0, 0, w, h);
+
+			// y = mx + c
+
+			//Bresenham's Algorithm
+			var dx = Math.abs(x2 - x1);
+			var sx = x1 < x2 ? 1 : -1;
+			var dy = Math.abs(y2 - y1);
+			var sy = y1 < y2 ? 1 : -1; 
+			var err = (dx > dy ? dx : -dy)/2;        
+			while (true) {
+				drawPixel(canvas, x1, y1);
+				if (x1 === x2 && y1 === y2) break;
+				var e2 = err;
+				if (e2 > -dx) { err -= dy; x1 += sx; }
+				if (e2 < dy) { err += dx; y1 += sy; }
+			}
+		}
 		window.onload=function(){
-
-			//drawDot, cvs4 = canvas 4, c4 = context 4
-
-			//Complicated option
-			/*
+			//drawDot, cvs4 = canvas 4
 			var cvs4 = document.getElementById("drawDotCanvas");
-			var cvs4W = cvs4.width;
-			var cvs4H = cvs4.height;
-			var c4 = cvs4.getContext("2d");
-			var cvs4Data = c4.getImageData(0, 0, cvs4W, cvs4H);
+			drawPixel(cvs4, 100, 100, 1, 1);
 
-			function drawDot(x, y, r, g, b, a){
-				var index = (x + y * cvs4W) * 4;
-
-				cvs4Data.data[index + 0] = r;
-				cvs4Data.data[index + 1] = g;
-				cvs4Data.data[index + 2] = b;
-				cvs4Data.data[index + 3] = a;
-			}
-			function updCvs(){
-				c4.putImageData(cvs4Data, 0, 0);
-			}
-
-			drawDot(100, 100, 0, 0, 0, 255);
-			updCvs();
-			*/
-
-			//Easy option
-			var cvs4 = document.getElementById("drawDotCanvas");
-			var c4 = cvs4.getContext("2d");
-			c4.fillRect(100, 100, 1, 1);
-
-			//drawLine, cvs5 = canvas 5, c5 = context 5
-
+			//drawLine, cvs5 = canvas 5
 			var cvs5 = document.getElementById("drawLineCanvas");
-			var c5 = cvs5.getContext("2d");
-
-			c5.beginPath();
-			c5.lineTo(10, 10);
-			c5.lineTo(190, 190);
-			c5.stroke();
+			drawLine(cvs5, 10, 10, 190, 190);
 
 			//Assignment Program
 			var cvs6 = document.getElementById("assProgramCanvas");
-			var c6 = cvs6.getContext("2d");
 
-			c6.beginPath();
-			c6.lineTo(50, 100); //start point
-			c6.lineTo(50, 50);
-			c6.lineTo(100, 50);
-			c6.lineTo(100, 100);
-			c6.lineTo(50, 100); //end point
-			c6.stroke();
+			drawLine(cvs6, 50, 100, 50, 50);
+			drawLine(cvs6, 50, 50, 100, 50);
+			drawLine(cvs6, 100, 50, 100, 100);
+			drawLine(cvs6, 100, 100, 50, 100);
 
-			c6.fillRect(75, 75, 1, 1);
+			drawPixel(cvs6, 75, 75);
 		}
 	</script>
 	<style type="text/css">
@@ -69,10 +86,14 @@
 		q, blockquote{
 			background-color: lightgrey;
 		}
+
+		a:visited {
+			color: blue;
+		}
 	</style>
 </head>
 <body>
-	<h3 style="text-align:center;">Homework I</h3>
+	<h3 style="text-align:center;" id="theTitle">Homework I</h3>
 	<h4>Explain</h4>
 	<ul>
 		<li><a href="#displayScreen">How to display a screen</a></li>
@@ -84,6 +105,7 @@
 	<h4>Program</h4>
 	<ul>
 		<li><a href="#assProgram">Draw an image as given in the assignment</a></li>
+		<li><a href="#demo">Try out features in our demo</a></li>
 	</ul>
 	<hr>
 	<div>
@@ -94,7 +116,7 @@
 	</div>
 
 	<div id="displayScreen">
-		<h3>How to display a screen</h3>
+		<h3>How to display a screen (canvas) in HTML5</h3>
 		<p>To use canvas in HTML5, here's a few step by step:</p>
 		<ol>
 			<li>
@@ -112,20 +134,20 @@
 	</div>
 	
 	<div id="theResolution">
-		<h3>The resolution of the screen</h3>
+		<h3>The resolution of the screen (canvas) in HTML5</h3>
 		<p>The resolution of this canvas is as can be seen in the code <q>&ltcanvas id="myCanvas" width="200" height="200"&gtCanvas not supported by this browser.&lt/canvas&gt</q> is <b>width = 200</b> and <b>height = 200</b>.</p>
 		<canvas id="theResolutionCanvas" width="200" height="200">Canvas not supported by this browser.</canvas>
 	</div>
 	
 
 	<div id="numofColors">
-		<h3>Number of colors that can be displayed on the screen</h3>
+		<h3>Number of colors that can be displayed on the screen (canvas) in HTML5</h3>
 		<canvas id="numofColorsCanvas" width="200" height="200">Canvas not supported by this browser.</canvas>
 	</div>
 	
 
 	<div id="drawDot">
-		<h3>How to display a dot at a certain coordinate on the screen</h3>
+		<h3>How to display a dot at a certain coordinate on the screen (canvas) in HTML5</h3>
 		<p>Now we will attempt to create a dot in the center of the canvas which will be on the coordinate of <b>100, 100</b> and follow this step by step:</p>
 		<ol>
 			<li>
@@ -139,17 +161,36 @@
 				Create a <b>javascript</b> script tag in your html document.
 			</li>
 			<li>
-				Type in
+				Type in these functions in the script tag.
+				<blockquote>
+					function setPixel(imageData, x, y, r=0, g=0, b=0, a=255){<br>
+						&emsp;index = (x + y * imageData.width) * 4;<br>
+						&emsp;imageData.data[index + 0] = r;<br>
+						&emsp;imageData.data[index + 1] = g;<br>
+						&emsp;imageData.data[index + 2] = b;<br>
+						&emsp;imageData.data[index + 3] = a;<br>
+					}<br>
+					function drawPixel(canvas, x, y, r=0, g=0, b=0, a=255){<br>
+						&emsp;var w = canvas.width;<br>
+						&emsp;var h = canvas.height;<br>
+						&emsp;context = canvas.getContext("2d");<br>
+						&emsp;var imageData = context.getImageData(0, 0, w, h);<br>
+						&emsp;setPixel(imageData, x, y);<br>
+						&emsp;context.putImageData(imageData, 0, 0);<br>
+					}
+				</blockquote>
+			</li>
+			<li>
+				Then type in these execution code
 				<blockquote>
 					window.onload=function(){<br>
 						&emsp;var canvas = document.getElementById("myCanvas");<br>
-						&emsp;var context = canvas.getContext("2d");<br>
-						&emsp;context.fillRect(100, 100, 1, 1);<br>
+						&emsp;drawPixel(canvas, 100, 100);<br>
 					}
 				</blockquote>
 				in the script tag.
 			</li>
-			<li>As you can see in the script we created a rectangle actually with the size of <b>1, 1 (width, height)</b> on coordinate <b>100, 100</b>.</li>
+			<li>As you can see in the script we changed the pixel color to black (r = 0, g = 0, b = 0)</b> on coordinate <b>100, 100</b>.</li>
 			<li>Voila! (you need to <b>zoom in</b> to see the pixel 'coz it's really small).</li>
 		</ol>
 		<canvas id="drawDotCanvas" width="200" height="200">Canvas not supported by this browser.</canvas>
@@ -157,7 +198,7 @@
 	
 
 	<div id="drawLine">
-		<h3>How to draw a line on the screen</h3>
+		<h3>How to draw a line on the screen (canvas) in HTML5</h3>
 		<p>Now we will attempt to create a line in the canvas which will be kinda similar which creating a dot in the canvas, follow this step by step:</p>
 		<ol>
 			<li>
@@ -168,21 +209,41 @@
 				on the body of your html document.
 			</li>
 			<li>
-				Create a <b>javascript</b> script tag in your html document.
+				Add in these functions in to the script tag with existing codes.
+				<blockquote>
+					function drawLine(canvas, x1, y1, x2, y2, r=0, g=0, b=0, a=255){<br>
+						&emsp;var w = canvas.width;<br>
+						&emsp;var h = canvas.height;<br>
+						&emsp;context = canvas.getContext("2d");<br>
+						&emsp;var imageData = context.getImageData(0, 0, w, h);<br><br>
+
+						&emsp;// y = mx + c<br><br>
+
+						&emsp;//Bresenham's Algorithm<br>
+						&emsp;var dx = Math.abs(x2 - x1);<br>
+						&emsp;var sx = x1 < x2 ? 1 : -1;<br>
+						&emsp;var dy = Math.abs(y2 - y1);<br>
+						&emsp;var sy = y1 < y2 ? 1 : -1; <br>
+						&emsp;var err = (dx > dy ? dx : -dy)/2;<br>    
+						&emsp;while (true) {<br>
+							&emsp;&emsp;drawPixel(canvas, x1, y1);<br>
+							&emsp;&emsp;if (x1 === x2 && y1 === y2) break;<br>
+							&emsp;&emsp;var e2 = err;<br>
+							&emsp;&emsp;if (e2 > -dx) { err -= dy; x1 += sx; }<br>
+							&emsp;&emsp;if (e2 < dy) { err += dx; y1 += sy; }<br>
+						&emsp;}<br>
+					}
+				</blockquote>
 			</li>
 			<li>
-				Type in
+				Then type in these execution code
 				<blockquote>
 					window.onload=function(){<br>
 						&emsp;var canvas = document.getElementById("myCanvas");<br>
-						&emsp;var context = canvas.getContext("2d");<br>
-						&emsp;context.beginPath();<br>
-						&emsp;context.lineTo(10, 10);<br>
-						&emsp;context.lineTo(190, 190);<br>
-						&emsp;context.stroke();<br>
+						&emsp;drawLine(canvas, 10, 10, 190, 190);<br>
 					}
 				</blockquote>
-				in the script tag.
+				in the script tag inside <b>window.onload=function</b> if it already exists.
 			</li>
 			<li>As you can see in the script we will create a line starting from coordinate <b>10, 10</b> until <b>190, 190</b>.</li>
 		</ol>
@@ -201,29 +262,44 @@
 				on the body of your html document.
 			</li>
 			<li>
-				Create a <b>javascript</b> script tag in your html document.
-			</li>
-			<li>
 				Type in
 				<blockquote>
 					window.onload=function(){<br>
 						&emsp;var canvas = document.getElementById("myCanvas");<br>
-						&emsp;var context = canvas.getContext("2d");<br>
-						&emsp;context.beginPath();<br>
-						&emsp;context.lineTo(50, 100);<br>
-						&emsp;context.lineTo(50, 50);<br>
-						&emsp;context.lineTo(100, 50);<br>
-						&emsp;context.lineTo(100, 100);<br>
-						&emsp;context.lineTo(50, 100);<br>
-						&emsp;context.stroke();<br>
-						&emsp;context.fillRect(75, 75, 1, 1);<br>
+						&emsp;drawLine(canvas, 50, 100, 50, 50);<br>
+						&emsp;drawLine(canvas, 50, 50, 100, 50);<br>
+						&emsp;drawLine(canvas, 100, 50, 100, 100);<br>
+						&emsp;drawLine(canvas, 100, 100, 50, 100);<br><br>
+
+						&emsp;drawPixel(canvas, 75, 75);<br>
 					}
 				</blockquote>
-				in the script tag.
+				in the script tag inside <b>window.onload=function</b> if it already exists.
 			</li>
-			<li>As you can probably see, in the script we created a rectangle with lines starting from <b>50, 100</b> continuing to <b>50, 50</b> then <b>100, 50</b> then <b>100, 100</b> and finally returning to the starting point <b>50, 100</b> also we added a point/pixel at the center of the rectangle specifically at <b>75, 75</b> by creating a pixel wide rectangle.</li>
+			<li>
+				As you can probably see, in the script we created a rectangle with lines starting from <b>50, 100</b> continuing to <b>50, 50</b> then <b>100, 50</b> then <b>100, 100</b> and finally returning to the starting point <b>50, 100</b> also we added a point/pixel at the center of the rectangle specifically at <b>75, 75</b>.
+			</li>
 		</ol>
 		<canvas id="assProgramCanvas" width="200" height="200">Canvas not supported by this browser.</canvas>
 	</div>
+	<div id="demo">
+		<h3>Demo</h3>
+		<h2>draw pixel</h2>
+		x:<input type="text" id="xcoor" size="3">
+		y:<input type="text" id="ycoor" size="3">
+		<button onclick="execPixel()">draw</button>	
+		<p id="res">width:200 height:200</p>
+		<canvas id="myCanvas" width="200" height="200"></canvas>
+
+		<h2>draw line</h2>
+		x1:<input type="text" id="x1coor" size="3">
+		y1:<input type="text" id="y1coor" size="3"><br>
+		x2:<input type="text" id="x2coor" size="3">
+		y2:<input type="text" id="y2coor" size="3">
+		<button onclick="execLine()">draw</button>	
+		<p id="res">width:200 height:200</p>
+		<canvas id="myCanvas2" width="200" height="200"></canvas>
+	</div>
+	<h4 style="text-align: center;"><a href="#theTitle">return top</a></h4>
 </body>
 </html>
