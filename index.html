@@ -77,6 +77,13 @@
 
 			drawPixel(cvs6, 75, 75);
 		}
+		
+		function changeColor(){
+			let color = document.getElementById('colorInputColor').value;
+			document.querySelector("#numofColorsCanvas").style.backgroundColor = color;
+			document.getElementById('colorInputText').value = color;
+		}
+		
 	</script>
 	<style type="text/css">
 		canvas{
@@ -142,7 +149,22 @@
 
 	<div id="numofColors">
 		<h3>Number of colors that can be displayed on the screen (canvas) in HTML5</h3>
-		<canvas id="numofColorsCanvas" width="200" height="200">Canvas not supported by this browser.</canvas>
+		<p>HTML color codes are hexadecimal triplets representing the colors red, green, and blue (#RRGGBB) each of which can be the range of:</p>
+		<li>0 to 255 (in decimal)</li>
+		<li>00 to FF (in hexadecimal)</li>
+		<p>Because each of the three colors can have values from 0 to 255 (256 possible values), there are:
+			256 &times 256 &times 256 = 256&sup3 
+			= <b>16,777,216 possible color combinations</b>
+		</p>
+		<h3 style="color: blue;">COLOR PICKER</h3>
+		<div>
+			<input type="text" id="colorInputText">
+			<input type="color" id="colorInputColor">
+		</div>
+		<br>
+		<input type="button" id="colorButton" value="Fill" onclick="changeColor()">
+		<br><br>
+		<canvas id="numofColorsCanvas" width="200" height="200"></canvas>
 	</div>
 	
 
